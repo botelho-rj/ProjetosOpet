@@ -43,18 +43,36 @@ public class FuncionarioController implements IAbstractDAO<Funcionario> {
 		return lista;
 	}
 
+	/*OBS : O parametro do método é "id" do tipo int, mas no caso estamos usando apenas o CPF, que é do tipo long.
+	 * deixei o paramentro como int, no preparedstatement setei o id como o cpf. 		
+	*/
+	
 	@Override
 	public Funcionario procuraPorId(int id) {
 		Connection conn = null;
-		List<Funcionario> lista = new ArrayList<>();
+		Funcionario func = null;
 		try {
-
-		} catch (Exception e) {
-			// TODO: handle exception
-		} finally {
-
-		}
-		return null;
+			conn = DbConnect.getConnection();
+			PreparedStatement st = DbConnect.getPreparedStatement(conn, "SELECT * FROM CARTAO_PONTO WHERE CPF=?");
+			st.setInt(1, id);
+			ResultSet rs = st.executeQuery();
+			if(rs != null) {
+					func = new Funcionario(rs.getString("nome"),
+						new java.util.Date(rs.getDate("dtNiver").getDate()), rs.getLong("cpf"), rs.getInt("telefone"),
+						1000, "Analise de Sistemas", "Rua das Palmeiras");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (conn != null) {
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		return func;
 	}
 
 	@Override
@@ -118,15 +136,28 @@ public class FuncionarioController implements IAbstractDAO<Funcionario> {
 	@Override
 	public boolean deletar(int id) {
 		Connection conn = null;
-		List<Funcionario> lista = new ArrayList<>();
+		boolean resultado = false;
 		try {
-
+			conn = DbConnect.getConnection();
+			PreparedStatement st = DbConnect.getPreparedStatement(conn, "DELETE FROM CARTAO_PONTO WHERE CPF=?");
+			st.setInt(1, id);
+			if(st.executeUpdate() != 0){
+				resultado = true;
+			}else{
+				resultado = false;
+			}
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		} finally {
-
+			if(conn != null){
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
-		return false;
+		return resultado;
 	}
 
 	@Override
