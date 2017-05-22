@@ -14,6 +14,8 @@ import br.opet.projeto.util.DbConnect;
 
 public class FuncionarioController implements IAbstractDAO<Funcionario> {
 
+	aaaaaaaaaaaaaaaa
+	
 	@SuppressWarnings("deprecation")
 	@Override
 	public List<Funcionario> listarTodos() {
