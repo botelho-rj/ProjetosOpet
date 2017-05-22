@@ -29,6 +29,19 @@ public class CadastroFuncionarioVB {
 		return "alterarFuncionario";
 	}
 	
+	//O eclipse acusará erro pois cpf é tipo long
+	// e ID do tipo int
+	
+	/*public void fazerExclusao(){
+		System.out.println("CPF: " + this.funcionario.getCpf());
+		if(funcionarioController.deletar(this.funcionario)){
+			FacesContext.getCurrentInstance().getApplication().getNavigationHandler().handleNavigation(FacesContext.getCurrentInstance(), null, "/cadastro/sucesso.xhtml");
+		}else{
+			FacesContext.getCurrentInstance().getApplication().getNavigationHandler().handleNavigation(FacesContext.getCurrentInstance(), null, "/cadastro/erro.xhtml");
+		}
+	}
+	*/
+	
 	public void fazerAlteracoes(){
 		System.out.println("CPF: " + this.funcionario.getCpf());
 		if(funcionarioController.atualizar(this.funcionario)){
@@ -49,7 +62,7 @@ public class CadastroFuncionarioVB {
 
 	public void fazerLogin() {
 		if (funcionarioController.fazerLogin(user, pass)) {
-			System.out.println("usu�rio" + user);
+			System.out.println("usuário" + user);
 			System.out.println("Senha: " + pass);
 			System.out.println("Deu certo!");
 		} else {
